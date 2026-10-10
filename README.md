@@ -118,6 +118,7 @@ The `dist/` folder is plain static files.
 
 - **Netlify:** build command `npm run build`, publish directory `dist` (`netlify.toml` included). Add the EmailJS env vars.
 - **Vercel:** framework preset *Vite*, build `npm run build`, output `dist`.
+- **IIS:** upload the contents of `dist/`, including `web.config` and the complete `assets/` folder. The config registers `.webp` as `image/webp`; if images still return 404, verify the requested files exist on the server at the matching paths (for example, `assets/hero-showroom.webp`).
 - **GitHub Pages / any static host:** upload `dist/`. `404.html` is generated. For a project page under a sub-path, set `base` in `vite.config.ts`.
 - Serve over HTTPS and enable gzip/brotli (Netlify and Vercel do this automatically).
 
