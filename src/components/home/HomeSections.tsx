@@ -49,13 +49,13 @@ export function AboutSection() {
       <div className="container about">
         <div className="about__collage">
           <Reveal kind="wipe" className="about__img about__img--1">
-            <Img src="/assets/images/about/about-1.jpg" alt="Rathin induction tilting boiling kettle in stainless steel" width={900} height={1200} />
+            <Img src="/assets/images/about/about-1.png" alt="Rathin induction tilting boiling kettle in stainless steel" width={900} height={1200} />
           </Reveal>
           <Reveal kind="wipe" delay={0.15} className="about__img about__img--2">
-            <Img src="/assets/images/about/about-2.jpg" alt="Rathin floor-standing commercial induction cooktops" width={900} height={900} />
+            <Img src="/assets/images/about/about-2.png" alt="Rathin floor-standing commercial induction cooktops" width={900} height={900} />
           </Reveal>
           <Reveal kind="wipe" delay={0.3} className="about__img about__img--3">
-            <Img src="/assets/images/about/about-3.jpg" alt="Rathin induction griddle flat top on wheels" width={900} height={675} />
+            <Img src="/assets/images/about/about-3.png" alt="Rathin induction griddle flat top on wheels" width={900} height={675} />
           </Reveal>
           <Reveal kind="scale" delay={0.4} className="about__badge">
             <Icon name="shield" />
@@ -207,7 +207,7 @@ export function ParallaxCta() {
   const y = useTransform(scrollYProgress, [0, 1], ['-12%', '12%']);
   return (
     <section ref={ref} className="parallax" aria-label="Upgrade your kitchen to induction">
-      <motion.div className="parallax__bg" style={{ y, backgroundImage: 'url(/assets/images/parallax.jpg)' }} aria-hidden="true" />
+      <motion.div className="parallax__bg" style={{ y, backgroundImage: 'url(/assets/hero-showroom.webp)' }} aria-hidden="true" />
       <div className="parallax__overlay" aria-hidden="true" />
       <div className="container parallax__inner">
         <Reveal>

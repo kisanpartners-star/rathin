@@ -134,7 +134,7 @@ export default function ProductDetail() {
             </ul>
 
             <p className="pd-price">
-              <Icon name="rupee" /> <strong>Price on request.</strong> Share your requirement and we will send a clear quote.
+              <Icon name="rupee" /> <span><strong>Price on request.</strong> Share your requirement and we will send a clear quote.</span>
             </p>
 
             <div className="pd-actions">
