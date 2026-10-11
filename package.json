@@ -1,7 +1,7 @@
 {
   "name": "rathin-website",
   "private": true,
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "RATHIN - Manufacturing Innovation. Static React + TypeScript website for a commercial induction kitchen equipment manufacturer.",
   "type": "module",
   "scripts": {

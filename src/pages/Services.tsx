@@ -1,14 +1,18 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '../components/Button';
 import { CtaBand } from '../components/CtaBand';
 import { WarrantyBanner } from '../components/home/HomeSections';
 import { Icon } from '../components/Icon';
 import { Img } from '../components/Img';
+import { Lightbox } from '../components/Lightbox';
 import { PageHero } from '../components/PageHero';
 import { Reveal } from '../components/Reveal';
 import { RequestServiceButton } from '../components/RequestServiceButton';
 import { SectionHeading } from '../components/SectionHeading';
 import { SEO } from '../components/SEO';
+import { DataTableView } from '../components/DataTableView';
+import { guides, stageTable } from '../data/products';
 import { amcPlans, amcRows, processSteps, services } from '../data/services';
 import { cx } from '../utils/cx';
 import { serviceListSchema } from '../utils/schema';
@@ -19,7 +23,11 @@ function Cell({ v }: { v: boolean | string }) {
   return <>{v}</>;
 }
 
+const installGuides = [guides.wiring, guides.cookware, guides.levels, guides.panel, guides.glass];
+const installImages = installGuides.map((g) => g.image!);
+
 export default function Services() {
+  const [light, setLight] = useState<number | null>(null);
   return (
     <>
       <SEO
@@ -89,6 +97,45 @@ export default function Services() {
         </section>
       ))}
 
+      <section className="section section--white" id="installation-guide">
+        <div className="container">
+          <SectionHeading
+            eyebrow="Installation Guide"
+            title={<>Power, Wiring and Cookware <em>Made Simple</em></>}
+            subtitle="What our technicians check on every installation, and what your kitchen should prepare before delivery."
+          />
+          <div className="install__grid">
+            {installGuides.map((g, i) => (
+              <Reveal key={g.id} delay={(i % 3) * 0.08}>
+                <article className="guide">
+                  <div className="guide__text">
+                    <h3>{g.title}</h3>
+                    <p>{g.text}</p>
+                    {g.bullets ? (
+                      <ul className="tick-list">
+                        {g.bullets.map((b) => (
+                          <li key={b}>
+                            <Icon name="checkCircle" /> {b}
+                          </li>
+                        ))}
+                      </ul>
+                    ) : null}
+                  </div>
+                  <button type="button" className="guide__img" onClick={() => setLight(i)} aria-label={`Enlarge: ${g.title}`}>
+                    <Img src={g.image!.src} alt={g.image!.alt} width={g.image!.width} height={g.image!.height} />
+                  </button>
+                </article>
+              </Reveal>
+            ))}
+          </div>
+          <div className="install__tip">
+            <h3>Heavy-duty 380 V units</h3>
+            <p>Big wok, stock pot and kettle models use eight power stages. Share the rating of your machine and we will confirm cable size, breaker and earthing before installation.</p>
+            <DataTableView table={stageTable} />
+          </div>
+        </div>
+      </section>
+
       <section className="section section--blush">
         <div className="container">
           <SectionHeading eyebrow="Service Process" title={<>How a Service Request <em>Works</em></>} />
@@ -156,6 +203,7 @@ export default function Services() {
       </section>
 
       <CtaBand />
+      <Lightbox images={installImages} index={light} onClose={() => setLight(null)} onIndexChange={setLight} />
     </>
   );
 }

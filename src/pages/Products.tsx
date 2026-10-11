@@ -48,7 +48,7 @@ export default function Products() {
 
   const list = useMemo(() => {
     const q = query.trim().toLowerCase();
-    let out = products.filter((p) => (category === 'all' || p.category === category) && (!q || `${p.name} ${p.model} ${p.tagline} ${p.keywords.join(' ')}`.toLowerCase().includes(q)));
+    let out = products.filter((p) => (category === 'all' || p.category === category) && (!q || `${p.name} ${p.model} ${p.tagline} ${p.keywords.join(' ')} ${p.tables.flatMap((t) => t.rows.map((r) => r.join(' '))).join(' ')}`.toLowerCase().includes(q)));
     if (sort === 'power-asc') out = [...out].sort((a, b) => a.powerKw - b.powerKw);
     if (sort === 'power-desc') out = [...out].sort((a, b) => b.powerKw - a.powerKw);
     if (sort === 'name') out = [...out].sort((a, b) => a.name.localeCompare(b.name));
@@ -58,14 +58,14 @@ export default function Products() {
   return (
     <>
       <SEO
-        title="Induction Cooktops, Woks, Griddles & Kettles | Rathin"
-        description="Buy Rathin commercial induction cooktops, induction woks, induction griddles, tilting bratt pans and tilting boiling kettles in SS 304. 3.5 kW to 15 kW, 1 year warranty."
+        title="Commercial Induction Kitchen Equipment | Rathin"
+        description="Commercial induction wok cookers, multi-burner cookers, stock pot, griddles, steamers, fryers, flame stoves and table-top cookers from 2.5 kW to 30 kW. 1 year warranty."
         path="/products"
-        keywords={['induction cooktop price', 'commercial induction cooker', 'induction wok', 'induction griddle', 'tilting bratt pan', 'tilting boiling kettle', 'induction kettle']}
+        keywords={['commercial induction cooker', 'induction wok cooker', 'multi burner induction cooker', 'induction griddle', 'induction steamer', 'induction fryer', 'electric flame stove', 'table top induction cooker']}
       />
       <PageHero
         title="Commercial Induction Products"
-        subtitle="Stainless steel induction cooktops, woks, griddles, bratt pans and boiling kettles, made in India."
+        subtitle="Wok cookers, multi-burner ranges, stock pots, griddles, steamers, fryers and table-top cookers in stainless steel."
         image="/assets/banners/banner-products.webp"
         crumbs={[{ label: 'Products' }]}
       />
@@ -78,7 +78,7 @@ export default function Products() {
               <label htmlFor="product-search" className="sr-only">
                 Search products
               </label>
-              <input id="product-search" type="search" placeholder="Search by name, model or power (e.g. 5 kW wok)" value={query} onChange={(e) => setQuery(e.target.value)} />
+              <input id="product-search" type="search" placeholder="Search name, model or power (e.g. TS-AB0001, 8 kW wok)" value={query} onChange={(e) => setQuery(e.target.value)} />
             </div>
             <div className="toolbar__sort">
               <Icon name="sort" />

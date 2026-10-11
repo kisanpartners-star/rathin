@@ -7,7 +7,17 @@ export interface ImageRef {
   height?: number;
 }
 
-export type CategoryId = 'cooktop' | 'wok' | 'griddle' | 'bratt-pan' | 'kettle' | 'range';
+export type CategoryId = 'wok' | 'stockpot' | 'kettle' | 'griddle' | 'steamer' | 'fryer' | 'flame' | 'multi' | 'tabletop' | 'builtin';
+
+/** A responsive data table (model list, power-level chart ...). Each row has one cell per column. */
+export interface DataTable {
+  title: string;
+  note?: string;
+  columns: string[];
+  rows: string[][];
+}
+
+export type GuideId = 'cookware' | 'wiring' | 'glass' | 'panel' | 'levels' | 'stages';
 
 export interface ProductCategory {
   id: CategoryId;
@@ -42,6 +52,10 @@ export interface Product {
   features: string[];
   applications: string[];
   warranty: string[];
+  /** Model / variant tables shown in the "Models and Specs" tab */
+  tables: DataTable[];
+  /** Which shared guides (cookware, wiring, ...) are shown on the product page */
+  guides: GuideId[];
   /** Used for sorting by power (kW) */
   powerKw: number;
   featured?: boolean;

@@ -1,4 +1,4 @@
-# RATHIN - Manufacturing Innovation (website)
+# RATHIN - Manufacturing Innovation (website) - V2
 
 Static, SEO-ready website for Rathin, a manufacturer and service provider of commercial induction kitchen equipment.
 
@@ -6,6 +6,15 @@ Static, SEO-ready website for Rathin, a manufacturer and service provider of com
 **Fonts:** Philosopher (headings) and Alegreya (body) from Google Fonts.
 
 > **Status note:** this project was written in a sandbox that could not reach the npm registry, so `npm install`, the TypeScript compile and the production build were **not run there**. Please run the three commands below once. If anything reports an error, send me the message and I will fix it.
+
+## V2 changes (Products and Services pages only)
+
+- **Products** now come from the supplied catalogue: 27 products in 10 categories (wok cookers, stock pot and soup, kettles and decoction, griddles, steamers and noodle, fryers, electric flame stoves, multi-burner cookers, table-top cookers, built-in and hot pot). Only product renders are used; no factory or in-house photos.
+- **Product detail page**: image gallery with enlarge, key specifications, full model tables (turn into cards on phones), cookware, 220 V / 380 V wiring, glass plate, control panel, 9 power levels and power-stage guides, related products and enquiry form.
+- **Services page**: new Installation Guide section (wiring, cookware, power levels, control panel, glass plate, 8-stage power table).
+- Edit products in `src/data/products.ts`; images are in `public/assets/images/catalog/` and `public/assets/images/guides/`.
+- Model codes (TS-..., AT..., AY...) and specs are copied from the catalogue. Confirm you may use the catalogue images and codes, or replace them with your own, before launch.
+- Home, Blogs, Contact and the other pages were not changed (the Home hero and gallery still use the V1 images).
 
 ## 1. Install, run, build
 
@@ -29,7 +38,7 @@ Placeholders you MUST replace before launch:
 - Phone / WhatsApp / email / address / map (siteConfig.ts). Defaults are dummy values.
 - **Stats** (500+ machines, 250+ clients, ...) are placeholders. Only publish numbers you can stand behind.
 - **Testimonials** (`src/data/home.ts`) are sample text. Replace with real customer feedback, then set `placeholder: false` (the "Sample" badge disappears).
-- **Product specs, model numbers and dimensions** (`src/data/products.ts`) are realistic placeholders. Verify against your machines.
+- **Product specs, model numbers and dimensions** (`src/data/products.ts`) come from the supplied catalogue. Verify against your machines.
 - **AMC plans** (`src/data/services.ts`) are illustrative.
 - **Brochure**: replace `public/assets/brochures/rathin-brochure.pdf`.
 - `.env` EmailJS keys (see below).
@@ -118,7 +127,6 @@ The `dist/` folder is plain static files.
 
 - **Netlify:** build command `npm run build`, publish directory `dist` (`netlify.toml` included). Add the EmailJS env vars.
 - **Vercel:** framework preset *Vite*, build `npm run build`, output `dist`.
-- **IIS:** upload the contents of `dist/`, including `web.config` and the complete `assets/` folder. The config registers `.webp` as `image/webp`; if images still return 404, verify the requested files exist on the server at the matching paths (for example, `assets/hero-showroom.webp`).
 - **GitHub Pages / any static host:** upload `dist/`. `404.html` is generated. For a project page under a sub-path, set `base` in `vite.config.ts`.
 - Serve over HTTPS and enable gzip/brotli (Netlify and Vercel do this automatically).
 

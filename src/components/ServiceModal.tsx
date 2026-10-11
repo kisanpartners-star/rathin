@@ -38,7 +38,7 @@ function ModalPanel() {
         aria-labelledby="service-modal-title"
         tabIndex={-1}
         initial={isPhone ? { y: '100%' } : { opacity: 0, y: 36, scale: 0.97 }}
-        animate={isPhone ? { y: 0 } : { opacity: 1, y: 0, scale: 1 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
         exit={isPhone ? { y: '100%' } : { opacity: 0, y: 24, scale: 0.97 }}
         transition={{ type: 'spring', stiffness: 320, damping: 32 }}
       >

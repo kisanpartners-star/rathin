@@ -4,6 +4,7 @@ import { Link, useParams } from 'react-router-dom';
 import { A11y, Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Button } from '../components/Button';
+import { DataTableView } from '../components/DataTableView';
 import { CtaBand } from '../components/CtaBand';
 import { EnquiryForm } from '../components/EnquiryForm';
 import { Icon } from '../components/Icon';
@@ -14,7 +15,7 @@ import { ProductCard } from '../components/ProductCard';
 import { RequestServiceButton } from '../components/RequestServiceButton';
 import { SectionHeading } from '../components/SectionHeading';
 import { SEO } from '../components/SEO';
-import { categoryLabel, getProduct, relatedProducts } from '../data/products';
+import { categoryLabel, getProduct, guides, relatedProducts } from '../data/products';
 import { siteConfig, whatsappLink } from '../data/siteConfig';
 import { cx } from '../utils/cx';
 import { productSchema } from '../utils/schema';
@@ -22,11 +23,11 @@ import { clipTitle, fitDescription } from '../utils/seoText';
 import NotFound from './NotFound';
 
 const tabs = [
-  { id: 'description', label: 'Description' },
-  { id: 'specs', label: 'Specifications' },
+  { id: 'description', label: 'Overview' },
+  { id: 'specs', label: 'Models and Specs' },
   { id: 'features', label: 'Features' },
   { id: 'applications', label: 'Applications' },
-  { id: 'warranty', label: 'Warranty and Support' },
+  { id: 'warranty', label: 'Warranty' },
 ] as const;
 type TabId = (typeof tabs)[number]['id'];
 
@@ -35,12 +36,15 @@ export default function ProductDetail() {
   const product = getProduct(slug);
   const [active, setActive] = useState(0);
   const [lightbox, setLightbox] = useState<number | null>(null);
+  const [guideLight, setGuideLight] = useState<number | null>(null);
   const [tab, setTab] = useState<TabId>('description');
   const [zoom, setZoom] = useState<{ x: number; y: number } | null>(null);
 
   if (!product) return <NotFound />;
   const related = relatedProducts(product, 6);
   const main = product.gallery[active] ?? product.image;
+  const guideList = product.guides.map((g) => guides[g]);
+  const guideImages = guideList.filter((g) => g.image).map((g) => g.image!);
   const waMsg = `Hello Rathin, I am interested in the ${product.name} (${product.model}). Please share details and a quote.`;
 
   return (
@@ -99,7 +103,7 @@ export default function ProductDetail() {
                 </motion.button>
               </AnimatePresence>
               <span className="pd-gallery__hint">
-                <Icon name="zoom" /> Hover to zoom, click to enlarge
+                <Icon name="zoom" /> Click to enlarge
               </span>
             </div>
             <ul className="pd-gallery__thumbs">
@@ -116,7 +120,7 @@ export default function ProductDetail() {
           {/* ------------------------------- info */}
           <div className="pd-info">
             <span className="pd-info__cat">
-              <Icon name="tag" /> {categoryLabel(product.category)} &middot; Model {product.model}
+              <Icon name="tag" /> {categoryLabel(product.category)} &middot; {product.model}
             </span>
             <h2 className="pd-info__title">{product.name}</h2>
             <p className="pd-info__short">{product.shortDescription}</p>
@@ -182,9 +186,10 @@ export default function ProductDetail() {
             ) : null}
             {tab === 'specs' ? (
               <>
+                <h3 className="pd-subhead">Key specifications</h3>
                 <div className="spec-table-wrap">
                   <table className="spec-table">
-                    <caption className="sr-only">Technical specifications of {product.name}</caption>
+                    <caption className="sr-only">Key specifications of {product.name}</caption>
                     <tbody>
                       {product.specs.map((s) => (
                         <tr key={s.label}>
@@ -195,7 +200,11 @@ export default function ProductDetail() {
                     </tbody>
                   </table>
                 </div>
-                <p className="note">Specifications are indicative and may be customised. Custom sizes and power ratings are available on request.</p>
+                <h3 className="pd-subhead">Available models</h3>
+                {product.tables.map((t) => (
+                  <DataTableView key={t.title} table={t} />
+                ))}
+                <p className="note">Specifications follow the manufacturer catalogue and may be customised. Custom sizes and power ratings are available on request.</p>
               </>
             ) : null}
             {tab === 'features' ? (
@@ -229,8 +238,45 @@ export default function ProductDetail() {
         </div>
       </section>
 
+      {/* ------------------------------- guides */}
+      {guideList.length ? (
+        <section className="section section--blush" aria-labelledby="guides-title">
+          <div className="container">
+            <SectionHeading eyebrow="Know Before You Buy" title={<>Cookware, Power and <em>Connection Guide</em></>} subtitle="Everything your kitchen team needs to choose vessels, wire the machine and use every power level." />
+            <div className="guides">
+              {guideList.map((g) => {
+                const li = g.image ? guideImages.findIndex((x) => x.src === g.image!.src) : -1;
+                return (
+                  <article key={g.id} className={cx('guide', g.table && 'guide--table')}>
+                    <div className="guide__text">
+                      <h3>{g.title}</h3>
+                      <p>{g.text}</p>
+                      {g.bullets ? (
+                        <ul className="tick-list">
+                          {g.bullets.map((b) => (
+                            <li key={b}>
+                              <Icon name="checkCircle" /> {b}
+                            </li>
+                          ))}
+                        </ul>
+                      ) : null}
+                    </div>
+                    {g.image ? (
+                      <button type="button" className="guide__img" onClick={() => setGuideLight(li)} aria-label={`Enlarge: ${g.title}`}>
+                        <Img src={g.image.src} alt={g.image.alt} width={g.image.width} height={g.image.height} />
+                      </button>
+                    ) : null}
+                    {g.table ? <DataTableView table={g.table} /> : null}
+                  </article>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+      ) : null}
+
       {/* ------------------------------- related */}
-      <section className="section section--blush">
+      <section className="section section--white">
         <div className="container">
           <SectionHeading eyebrow="You May Also Like" title={<>Related <em>Induction Products</em></>} />
           <Swiper
@@ -277,6 +323,7 @@ export default function ProductDetail() {
       </section>
 
       <CtaBand serviceType="New Machine Enquiry" />
+      <Lightbox images={guideImages} index={guideLight} onClose={() => setGuideLight(null)} onIndexChange={setGuideLight} />
       <Lightbox images={product.gallery} index={lightbox} onClose={() => setLightbox(null)} onIndexChange={setLightbox} />
     </>
   );
